@@ -1,3 +1,7 @@
 {
-  "gravirovka": "STANKIN"
+  "gravirovka": [
+    "Stankin",
+    "Moscow",
+    "VR"
+  ]
 }

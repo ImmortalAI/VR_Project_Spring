@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Machine : MonoBehaviour
@@ -23,15 +24,18 @@ public class Machine : MonoBehaviour
 
     public class TextField
     {
-        public string gravirovka;
+        public string[] gravirovka;
     }
 
     public TextField textField;
+    private int currentText = 0;
+    public GameObject currentTextTablo;
 
     void Start()
     {
         m_Animator = gameObject.GetComponent<Animator>();
         LoadJson();
+        currentTextTablo.GetComponent<TextMeshPro>().text = textField.gravirovka[currentText];
     }
 
     // Update is called once per frame
@@ -42,7 +46,7 @@ public class Machine : MonoBehaviour
             current_timer -= Time.deltaTime;
             if (current_timer <= working_time + 3 && once)
             {
-                item.GetComponentInChildren<TextMeshPro>().text = this.textField.gravirovka;
+                item.GetComponentInChildren<TextMeshPro>().text = this.textField.gravirovka[currentText];
             }
             if (current_timer <= 3 && once)
             {
@@ -97,8 +101,19 @@ public class Machine : MonoBehaviour
         }
         else
         {
-            textField.gravirovka = "Temp";
+            textField.gravirovka = new string[1];
+            textField.gravirovka[0] = "Temp";
             Debug.LogError("Не удалось загрузить JSON файл.");
         }
+    }
+
+    public void ChangeText()
+    {
+        currentText += 1;
+        if (currentText >= textField.gravirovka.Length)
+        {
+            currentText = 0;
+        }
+        currentTextTablo.GetComponent<TextMeshPro>().text = textField.gravirovka[currentText];
     }
 }
